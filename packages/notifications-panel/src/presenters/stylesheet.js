@@ -144,10 +144,19 @@ export default function stylesheet(props, themeData) {
       alignItems: `center`,
     },
     emptyStateImage: {
-      marginTop: `20px`,
+      margin: `15px`
+    },
+    emptyStateTitle: {
+      fontFamily: themeData["notifications.fontFamily"],
+      fontSize: `14px`,
+      textAlign: `center`
     },
     emptyStateMessage: {
-      margin: `20px 0 37px`,
+      fontSize: `12px`,
+      fontFamily: themeData["notifications.fontFamily"],
+      margin: `10px 0 30px`,
+      textAlign: `center`,
+      width: `80%`
     },
   };
 

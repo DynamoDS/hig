@@ -64,7 +64,9 @@ export default function NotificationsPanel(props) {
     alterCoordinates,
     anchorPoint,
     children,
+    emptyTitle,
     emptyMessage,
+    emptyImage,
     heading,
     indicatorTitle,
     loading,
@@ -74,6 +76,7 @@ export default function NotificationsPanel(props) {
     open,
     markAllAsReadTitle,
     onClickMarkAllAsRead,
+    onNotificationChanged,
     notifications: notificationsInput = children,
     unreadCount: controlledUnreadCount,
     stylesheet,
@@ -85,6 +88,7 @@ export default function NotificationsPanel(props) {
     <NotificationFlyoutBehavior
       unreadCount={controlledUnreadCount}
       notifications={notificationsInput}
+      notificationChanged={onNotificationChanged}
     >
       {({
         dismissNotification,
@@ -99,7 +103,7 @@ export default function NotificationsPanel(props) {
           onClickMarkAllAsRead={onClickMarkAllAsRead}
           heading={heading}>
           {notifications.length == 0 ? (
-            <EmptyStatePresenter message={emptyMessage} stylesheet={stylesheet} />
+            <EmptyStatePresenter title={emptyTitle} message={emptyMessage} image={emptyImage} stylesheet={stylesheet} />
           ) : (
             notifications.map(
               CreateNotificationRenderer({ dismissNotification })

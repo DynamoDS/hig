@@ -103,6 +103,9 @@ export default class NotificationFlyoutBehavior extends Component {
       // eslint-disable-next-line react/no-access-state-in-setstate
       dismissedNotifications: this.state.dismissedNotifications.concat(id),
     });
+    // This function let NotificationCenter knows about any change done in NotificationsPanel
+    // so then we could trigger the function that shares the NotificationCenter height to Dynamo
+    this.props.notificationChanged();
   };
 
   /**
