@@ -94,14 +94,15 @@ export default function NotificationsPanel(props) {
         dismissNotification,
         handleClose,
         notifications,
-        showUnreadCount,
         unreadCount
       }) => (
         <Panel
           innerRef={() => { }}
           markAllAsReadTitle={markAllAsReadTitle}
           onClickMarkAllAsRead={onClickMarkAllAsRead}
-          heading={heading}>
+          heading={heading}
+          unreadCount={unreadCount}
+          >
           {notifications.length == 0 ? (
             <EmptyStatePresenter title={emptyTitle} message={emptyMessage} image={emptyImage} stylesheet={stylesheet} />
           ) : (

@@ -1,6 +1,6 @@
 {
   "name": "@dynamods/notifications-panel",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "HIG NotificationsPanel",
   "author": "Autodesk Inc.",
   "license": "Apache-2.0",
@@ -10,7 +10,8 @@
     "url": "https://github.com/DynamoDS/hig.git"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   },
   "main": "build/index.js",
   "module": "build/index.es.js",

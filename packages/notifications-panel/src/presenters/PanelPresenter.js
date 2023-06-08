@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { css } from "emotion";
 import { Panel } from "@hig/flyout";
-import ProgressRing from "@hig/progress-ring";
 import ThemeContext from "@hig/theme-context";
 import Typography from "@hig/typography";
 import {
@@ -15,7 +14,6 @@ import {
 import Button from "@hig/button"
 
 import stylesheet from "./stylesheet";
-
 export default function PanelPresenter({
   children,
   heading,
@@ -26,8 +24,10 @@ export default function PanelPresenter({
   refListWrapper,
   stylesheet: customStylesheet,
   markAllAsReadTitle,
-  onClickMarkAllAsRead
+  onClickMarkAllAsRead,
+  unreadCount
 }) {
+
   return (
     <ThemeContext.Consumer>
       {({ resolvedRoles }) => {
@@ -60,6 +60,7 @@ export default function PanelPresenter({
                 onClick={onClickMarkAllAsRead}
                 type="secondary"
                 target="_blank"
+                disabled={!!!unreadCount}
               />
             </footer>
           </Panel>

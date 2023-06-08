@@ -14,7 +14,8 @@ export default function Panel(props) {
     transitionStatus,
     stylesheet,
     markAllAsReadTitle,
-    onClickMarkAllAsRead
+    onClickMarkAllAsRead,
+    unreadCount
   } = props;
 
   return (
@@ -30,6 +31,7 @@ export default function Panel(props) {
           stylesheet={stylesheet}
           markAllAsReadTitle={markAllAsReadTitle}
           onClickMarkAllAsRead={onClickMarkAllAsRead}
+          unreadCount={unreadCount}
         >
           {children}
         </PanelPresenter>
