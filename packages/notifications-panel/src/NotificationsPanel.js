@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Panel from "./Panel";
 import Notification from "./Notification";
 import EmptyStatePresenter from "./presenters/EmptyStatePresenter";
@@ -77,18 +77,40 @@ export default function NotificationsPanel(props) {
     markAllAsReadTitle,
     onClickMarkAllAsRead,
     onNotificationChanged,
-    notifications: notificationsInput = children,
+    notifications,
     unreadCount: controlledUnreadCount,
     stylesheet,
     ...otherProps
   } = props;
   const { className } = otherProps;
 
+  const [notificationsInput, setNotificationsInput] = useState([]);
+
+  useEffect(()=> {
+    setNotificationsInput(notifications);
+  }, []);
+
+  const markNotificationAsRead = (id) => {
+
+    const updatedNotifications = notificationsInput.map(notification => {
+      if(notification.id !== id) return notification;
+      return {
+        ...notification,
+        featured: false,
+        unread: false
+      }
+    })
+
+    setNotificationsInput(updatedNotifications);
+  }
+
   return (
     <NotificationFlyoutBehavior
       unreadCount={controlledUnreadCount}
       notifications={notificationsInput}
       notificationChanged={onNotificationChanged}
+      markNotificationAsRead = {markNotificationAsRead}
+      setNotifications = {setNotificationsInput}
     >
       {({
         dismissNotification,

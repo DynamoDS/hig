@@ -28,12 +28,12 @@ const Notification = (props) => {
     onNotificationClick,
     onMouseEnter,
     onMouseLeave,
-    // Featured notifications show the dismiss button by default
-    showDismissButton = featured,
     stylesheet,
     timestamp,
     type,
     unread,
+    // Notifications dismiss button will be displayed in case unread || feature is true
+    showDismissButton = unread && featured,
     ...otherProps
   } = props;
   const { className } = otherProps;
