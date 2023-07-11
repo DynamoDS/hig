@@ -88,9 +88,10 @@ export default class NotificationFlyoutBehavior extends Component {
    * @param {string} id
    */
   dismissNotification = (id) => {
-    this.setState({
-      // eslint-disable-next-line react/no-access-state-in-setstate
-      dismissedNotifications: this.state.dismissedNotifications.concat(id),
+    this.setState((prevState) => {
+      const updatedNotifications = prevState.dismissedNotifications.includes(id);
+      if(updatedNotifications) return;
+      return { dismissedNotifications: prevState.dismissedNotifications.concat(id) }
     });
     this.props.markNotificationAsRead(id);
     // This function let NotificationCenter knows about any change done in NotificationsPanel
@@ -121,7 +122,6 @@ export default class NotificationFlyoutBehavior extends Component {
       if(notification.unread === false) return notification;
       return {
         ...notification,
-        featured: false,
         unread: false
       }
     })

@@ -96,7 +96,6 @@ export default function NotificationsPanel(props) {
       if(notification.id !== id) return notification;
       return {
         ...notification,
-        featured: false,
         unread: false
       }
     })
@@ -125,10 +124,10 @@ export default function NotificationsPanel(props) {
           heading={heading}
           unreadCount={unreadCount}
           >
-          {notifications.length == 0 ? (
+          {unreadCount === 0 ? (
             <EmptyStatePresenter title={emptyTitle} message={emptyMessage} image={emptyImage} stylesheet={stylesheet} />
           ) : (
-            notifications.map(
+            notificationsInput.map(
               CreateNotificationRenderer({ dismissNotification })
             )
           )}
