@@ -54,25 +54,14 @@ export default class NotificationFlyoutBehavior extends Component {
   // eslint-disable-next-line react/state-in-constructor
   state = {
     dismissedNotifications: [],
-    notifications: [],
     readNotifications: [],
   };
-
-  /**
-   * @param {Props} nextProps
-   * @returns {State | null}
-   */
-  static getDerivedStateFromProps(nextProps) {
-    return {
-      notifications: parseNotifications(nextProps.notifications),
-    };
-  }
 
   /**
    * @returns {ParsedNotification[]}
    */
   getNotifications() {
-    const { dismissedNotifications, notifications, readNotifications } =
+    const { dismissedNotifications, readNotifications } =
       this.state;
 
     const updateReadStatus = ({ id, unread, ...otherProps }) => ({
@@ -82,7 +71,7 @@ export default class NotificationFlyoutBehavior extends Component {
     });
     const isNotDismissed = ({ id }) => !dismissedNotifications.includes(id);
 
-    return notifications.map(updateReadStatus).filter(isNotDismissed);
+    return this.props.notifications.map(updateReadStatus).filter(isNotDismissed);
   }
 
   /** @returns {number} */
@@ -99,10 +88,12 @@ export default class NotificationFlyoutBehavior extends Component {
    * @param {string} id
    */
   dismissNotification = (id) => {
-    this.setState({
-      // eslint-disable-next-line react/no-access-state-in-setstate
-      dismissedNotifications: this.state.dismissedNotifications.concat(id),
+    this.setState((prevState) => {
+      const updatedNotifications = prevState.dismissedNotifications.includes(id);
+      if(updatedNotifications) return;
+      return { dismissedNotifications: prevState.dismissedNotifications.concat(id) }
     });
+    this.props.markNotificationAsRead(id);
     // This function let NotificationCenter knows about any change done in NotificationsPanel
     // so then we could trigger the function that shares the NotificationCenter height to Dynamo
     this.props.notificationChanged();
@@ -125,26 +116,24 @@ export default class NotificationFlyoutBehavior extends Component {
     );
   }
 
-  markAllNotificationsRead() {
+  markAllNotificationsAsRead() {
     const notifications = this.getNotifications();
-    const { readNotifications } = this.state;
-    const nextRead = notifications.reduce((result, notification) => {
-      const { id } = notification;
-
-      if (!result.includes(id)) result.push(id);
-
-      return result;
-    }, readNotifications.slice());
-
-    this.setState({ readNotifications: nextRead });
+    const updatedNotifications = notifications.map(notification => {
+      if(notification.unread === false) return notification;
+      return {
+        ...notification,
+        unread: false
+      }
+    })
+    this.setNotificationsInput(updatedNotifications);
+    this.setState({ readNotifications: updatedNotifications.map(notification => notification.id) });
   }
-
   /**
    * @returns {import("react").ReactElement}
    */
   render() {
     const { dismissNotification, handleClose } = this;
-    const notifications = this.getNotifications();
+    const notifications = this.props.notifications;
     const unreadCount = this.getUnreadCount();
     const showUnreadCount = unreadCount > 0;
 

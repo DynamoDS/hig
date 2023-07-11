@@ -58,6 +58,7 @@ const NotificationBehavior = (props) => {
 
   const handleDismissButtonClick = () => {
     hide();
+    handleExit();
   };
 
   const innerRef = refContainer;
