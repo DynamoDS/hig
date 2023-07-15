@@ -75,7 +75,7 @@ export default function NotificationsPanel(props) {
     onScroll,
     open,
     markAllAsReadTitle,
-    onClickMarkAllAsRead,
+    markAsRead,
     onNotificationChanged,
     notifications,
     unreadCount: controlledUnreadCount,
@@ -88,39 +88,41 @@ export default function NotificationsPanel(props) {
 
   useEffect(()=> {
     setNotificationsInput(notifications);
-  }, []);
+    this.props.notificationChanged();
+  }, [notifications]);
 
-  const markNotificationAsRead = (id) => {
+  // const markNotificationAsRead = (id) => {
+  //   // Here might be an error
+  //   const updatedNotifications = notificationsInput.map(notification => {
+  //     if(notification.id !== id) return notification;
+  //     return {
+  //       ...notification,
+  //       unread: false
+  //     }
+  //   })
 
-    const updatedNotifications = notificationsInput.map(notification => {
-      if(notification.id !== id) return notification;
-      return {
-        ...notification,
-        unread: false
-      }
-    })
-
-    setNotificationsInput(updatedNotifications);
-  }
+  //   setNotificationsInput(updatedNotifications);
+  // }
 
   return (
     <NotificationFlyoutBehavior
       unreadCount={controlledUnreadCount}
       notifications={notificationsInput}
       notificationChanged={onNotificationChanged}
-      markNotificationAsRead = {markNotificationAsRead}
+      markAsRead = {markAsRead}
       setNotifications = {setNotificationsInput}
     >
       {({
         dismissNotification,
         handleClose,
         notifications,
-        unreadCount
+        unreadCount,
+        markAllNotificationsAsRead
       }) => (
         <Panel
           innerRef={() => { }}
           markAllAsReadTitle={markAllAsReadTitle}
-          onClickMarkAllAsRead={onClickMarkAllAsRead}
+          onClickMarkAllAsRead={markAllNotificationsAsRead}
           heading={heading}
           unreadCount={unreadCount}
           >

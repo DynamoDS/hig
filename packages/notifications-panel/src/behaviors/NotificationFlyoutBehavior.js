@@ -53,25 +53,45 @@ export default class NotificationFlyoutBehavior extends Component {
   /** @type {State} */
   // eslint-disable-next-line react/state-in-constructor
   state = {
+    notifications: [],
     dismissedNotifications: [],
     readNotifications: [],
   };
 
   /**
+   * @param {Props} nextProps
+   * @returns {State | null}
+   */
+  static getDerivedStateFromProps(nextProps) {
+    return {
+      notifications: nextProps.notifications,
+      // notifications: parseNotifications(nextProps.notifications),
+    };
+  }
+
+  /**
    * @returns {ParsedNotification[]}
    */
+  // getNotifications() {
+  //   const { dismissedNotifications, readNotifications } =
+  //     this.state;
+
+  //   const updateReadStatus = ({ id, unread, ...otherProps }) => ({
+  //     id,
+  //     unread: unread && !readNotifications.includes(id),
+  //     ...otherProps,
+  //   });
+  //   const isNotDismissed = ({ id }) => !dismissedNotifications.includes(id);
+
+  //   return this.props.notifications.map(updateReadStatus).filter(isNotDismissed);
+  // }
+
   getNotifications() {
-    const { dismissedNotifications, readNotifications } =
-      this.state;
+    const { notifications } = this.state;
+    const unreadNotifications = this.props.notifications.filter(
+      notification => notification.unread === true);
 
-    const updateReadStatus = ({ id, unread, ...otherProps }) => ({
-      id,
-      unread: unread && !readNotifications.includes(id),
-      ...otherProps,
-    });
-    const isNotDismissed = ({ id }) => !dismissedNotifications.includes(id);
-
-    return this.props.notifications.map(updateReadStatus).filter(isNotDismissed);
+    return unreadNotifications;
   }
 
   /** @returns {number} */
@@ -88,22 +108,17 @@ export default class NotificationFlyoutBehavior extends Component {
    * @param {string} id
    */
   dismissNotification = (id) => {
-    this.setState((prevState) => {
-      const updatedNotifications = prevState.dismissedNotifications.includes(id);
-      if(updatedNotifications) return;
-      return { dismissedNotifications: prevState.dismissedNotifications.concat(id) }
-    });
-    this.props.markNotificationAsRead(id);
+    this.props.markAsRead(id);
     // This function let NotificationCenter knows about any change done in NotificationsPanel
     // so then we could trigger the function that shares the NotificationCenter height to Dynamo
-    this.props.notificationChanged();
+    // this.props.notificationChanged();
   };
 
   /**
    * Handler for when the flyout opens
    */
   handleClose = () => {
-    this.markAllNotificationsRead();
+    // this.markAllNotificationsRead();
   };
 
   /**
@@ -116,17 +131,13 @@ export default class NotificationFlyoutBehavior extends Component {
     );
   }
 
-  markAllNotificationsAsRead() {
+  markAllNotificationsAsRead = () => {
     const notifications = this.getNotifications();
-    const updatedNotifications = notifications.map(notification => {
-      if(notification.unread === false) return notification;
-      return {
-        ...notification,
-        unread: false
-      }
-    })
-    this.setNotificationsInput(updatedNotifications);
-    this.setState({ readNotifications: updatedNotifications.map(notification => notification.id) });
+    const unreadNotificationsIDs = notifications.map(notification => notification.id);
+    this.props.markAsRead(unreadNotificationsIDs)
+    // This function let NotificationCenter knows about any change done in NotificationsPanel
+    // so then we could trigger the function that shares the NotificationCenter height to Dynamo
+    // this.props.notificationChanged();
   }
   /**
    * @returns {import("react").ReactElement}
@@ -136,6 +147,7 @@ export default class NotificationFlyoutBehavior extends Component {
     const notifications = this.props.notifications;
     const unreadCount = this.getUnreadCount();
     const showUnreadCount = unreadCount > 0;
+    const markAllNotificationsAsRead = this.markAllNotificationsAsRead;
 
     return this.props.children({
       dismissNotification,
@@ -143,6 +155,7 @@ export default class NotificationFlyoutBehavior extends Component {
       notifications,
       showUnreadCount,
       unreadCount,
+      markAllNotificationsAsRead
     });
   }
 }
