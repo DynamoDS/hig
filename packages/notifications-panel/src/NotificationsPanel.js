@@ -88,21 +88,8 @@ export default function NotificationsPanel(props) {
 
   useEffect(()=> {
     setNotificationsInput(notifications);
-    this.props.notificationChanged();
+    onNotificationChanged();
   }, [notifications]);
-
-  // const markNotificationAsRead = (id) => {
-  //   // Here might be an error
-  //   const updatedNotifications = notificationsInput.map(notification => {
-  //     if(notification.id !== id) return notification;
-  //     return {
-  //       ...notification,
-  //       unread: false
-  //     }
-  //   })
-
-  //   setNotificationsInput(updatedNotifications);
-  // }
 
   return (
     <NotificationFlyoutBehavior
@@ -126,12 +113,12 @@ export default function NotificationsPanel(props) {
           heading={heading}
           unreadCount={unreadCount}
           >
-          {unreadCount === 0 ? (
-            <EmptyStatePresenter title={emptyTitle} message={emptyMessage} image={emptyImage} stylesheet={stylesheet} />
-          ) : (
+          {unreadCount > 0 ? (
             notificationsInput.map(
               CreateNotificationRenderer({ dismissNotification })
             )
+            ) : (
+            <EmptyStatePresenter title={emptyTitle} message={emptyMessage} image={emptyImage} stylesheet={stylesheet} />
           )}
         </Panel>
       )}

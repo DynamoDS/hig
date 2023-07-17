@@ -72,19 +72,6 @@ export default class NotificationFlyoutBehavior extends Component {
   /**
    * @returns {ParsedNotification[]}
    */
-  // getNotifications() {
-  //   const { dismissedNotifications, readNotifications } =
-  //     this.state;
-
-  //   const updateReadStatus = ({ id, unread, ...otherProps }) => ({
-  //     id,
-  //     unread: unread && !readNotifications.includes(id),
-  //     ...otherProps,
-  //   });
-  //   const isNotDismissed = ({ id }) => !dismissedNotifications.includes(id);
-
-  //   return this.props.notifications.map(updateReadStatus).filter(isNotDismissed);
-  // }
 
   getNotifications() {
     const { notifications } = this.state;
@@ -109,9 +96,6 @@ export default class NotificationFlyoutBehavior extends Component {
    */
   dismissNotification = (id) => {
     this.props.markAsRead(id);
-    // This function let NotificationCenter knows about any change done in NotificationsPanel
-    // so then we could trigger the function that shares the NotificationCenter height to Dynamo
-    // this.props.notificationChanged();
   };
 
   /**
@@ -134,10 +118,7 @@ export default class NotificationFlyoutBehavior extends Component {
   markAllNotificationsAsRead = () => {
     const notifications = this.getNotifications();
     const unreadNotificationsIDs = notifications.map(notification => notification.id);
-    this.props.markAsRead(unreadNotificationsIDs)
-    // This function let NotificationCenter knows about any change done in NotificationsPanel
-    // so then we could trigger the function that shares the NotificationCenter height to Dynamo
-    // this.props.notificationChanged();
+    this.props.markAsRead(unreadNotificationsIDs);
   }
   /**
    * @returns {import("react").ReactElement}

@@ -32,7 +32,7 @@ const Notification = (props) => {
     timestamp,
     type,
     unread,
-    // Notifications dismiss button will be displayed in case unread is true
+    // Notifications dismiss button will be displayed in case featured is true
     showDismissButton = featured,
     ...otherProps
   } = props;
