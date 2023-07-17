@@ -65,7 +65,6 @@ export default class NotificationFlyoutBehavior extends Component {
   static getDerivedStateFromProps(nextProps) {
     return {
       notifications: nextProps.notifications,
-      // notifications: parseNotifications(nextProps.notifications),
     };
   }
 
@@ -101,9 +100,7 @@ export default class NotificationFlyoutBehavior extends Component {
   /**
    * Handler for when the flyout opens
    */
-  handleClose = () => {
-    // this.markAllNotificationsRead();
-  };
+  handleClose = () => {};
 
   /**
    * @param {ParsedNotification[]} notifications
