@@ -75,7 +75,7 @@ export default function NotificationsPanel(props) {
     onScroll,
     open,
     markAllAsReadTitle,
-    onClickMarkAllAsRead,
+    markAsRead,
     onNotificationChanged,
     notifications,
     unreadCount: controlledUnreadCount,
@@ -88,48 +88,37 @@ export default function NotificationsPanel(props) {
 
   useEffect(()=> {
     setNotificationsInput(notifications);
-  }, []);
-
-  const markNotificationAsRead = (id) => {
-
-    const updatedNotifications = notificationsInput.map(notification => {
-      if(notification.id !== id) return notification;
-      return {
-        ...notification,
-        unread: false
-      }
-    })
-
-    setNotificationsInput(updatedNotifications);
-  }
+    onNotificationChanged();
+  }, [notifications]);
 
   return (
     <NotificationFlyoutBehavior
       unreadCount={controlledUnreadCount}
       notifications={notificationsInput}
       notificationChanged={onNotificationChanged}
-      markNotificationAsRead = {markNotificationAsRead}
+      markAsRead = {markAsRead}
       setNotifications = {setNotificationsInput}
     >
       {({
         dismissNotification,
         handleClose,
         notifications,
-        unreadCount
+        unreadCount,
+        markAllNotificationsAsRead
       }) => (
         <Panel
           innerRef={() => { }}
           markAllAsReadTitle={markAllAsReadTitle}
-          onClickMarkAllAsRead={onClickMarkAllAsRead}
+          onClickMarkAllAsRead={markAllNotificationsAsRead}
           heading={heading}
           unreadCount={unreadCount}
           >
-          {unreadCount === 0 ? (
-            <EmptyStatePresenter title={emptyTitle} message={emptyMessage} image={emptyImage} stylesheet={stylesheet} />
-          ) : (
+          {unreadCount > 0 ? (
             notificationsInput.map(
               CreateNotificationRenderer({ dismissNotification })
             )
+            ) : (
+            <EmptyStatePresenter title={emptyTitle} message={emptyMessage} image={emptyImage} stylesheet={stylesheet} />
           )}
         </Panel>
       )}
