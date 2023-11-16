@@ -57,7 +57,7 @@ export default function stylesheet(props, themeData) {
       },
       ...(transitionStatus ? getRulesByTransitionStatus(transitionStatus) : {}),
       ...(hasHover
-        ? { backgroundColor: themeData["colorScheme.surface.level300"] }
+        ? { backgroundColor: themeData["colorScheme.background.filled.level100To250.hover"] }
         : {}),
     },
     notificationContent: {
