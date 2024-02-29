@@ -75,11 +75,26 @@ export default function stylesheet(props, themeData) {
       margin: `${themeData["density.spacings.small"]}`,
       wordWrap: `break-word`,
       overflow: `hidden`,
+      b: {
+        fontSize: '12px',
+        fontWeight: 'bold'
+      },
+      a: {
+        fontSize: '12px',
+        fontWeight: '200'
+      },
+    },
+    notificationDescription: {
+      p: {
+        fontSize: '12px',
+        fontWeight: '200'
+      }
     },
     panelTitle: {
       padding: `${themeData["density.spacings.small"]}
         ${themeData["density.spacings.large"]}`,
       borderBottom: `1px solid ${themeData["divider.heavyColor"]}`,
+      fontWeight: 'bold'
     },
     panelContainer: {
       width: `100%`,
