@@ -76,7 +76,11 @@ export default function NotificationPresenter(props) {
                   css(styles.notificationContentText),
                 ])}
               >
-                <RichText size="small">{children}</RichText>
+                <RichText size="small" 
+                  className={cx([className, 
+                  css(styles.notificationDescription)])}>
+                    {children}
+                </RichText>
                 {timestamp}
                 {showDismissButton ? (
                   <DismissButtonPresenter
